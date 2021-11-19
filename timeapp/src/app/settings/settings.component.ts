@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { loginStart, logout } from '../auth/state/auth.actions';
+import { isAuthenticated } from '../auth/state/auth.selector';
+import { AuthState } from '../auth/state/auth.state';
+import { User } from '../core/models/user.model';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -8,11 +15,17 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class SettingsComponent implements OnInit {
   loginForm: FormGroup;
+  loggedUser: User;
   submitted = false;
+  isAuthenticated: Observable<boolean>;
   
-  constructor() { }
+  constructor(
+    private authService: AuthService,
+    private store: Store<AuthState>
+  ) { }
 
   ngOnInit(): void {
+    this.isAuthenticated = this.store.select(isAuthenticated);
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
@@ -24,6 +37,22 @@ export class SettingsComponent implements OnInit {
 
   onLoginSubmit() {
     this.submitted = true;
+    const username = this.loginForm.value.username;
+    const password = this.loginForm.value.password;
+    const apiguid = this.loginForm.value.apiguid;
+    this.loggedUser = new User(
+      username,
+      password,
+      apiguid
+    );
+
+    this.store.dispatch(loginStart({ username, password, apiguid}));
+    console.log('is auth : ', this.isAuthenticated);
+    
+  }
+
+  onLogout() {
+    this.store.dispatch(logout());
   }
 
 }
