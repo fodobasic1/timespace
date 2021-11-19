@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h3>Set Your Data</h3>
+      <hr />
+      <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+        <div class="mb-3">
+          <label>Username</label>
+          <input type="text" class="form-control" formControlName="username" />
+          <div *ngIf="f['username'].touched && !f['password'].valid">
+            <div *ngIf="loginForm.get('username')?.errors?.['required']" class="error-text">
+                Username is required
+            </div> 
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label>Password</label>
+          <input type="password" class="form-control" formControlName="password"/>
+          <div *ngIf="loginForm.get('password')?.touched && !loginForm.get('password')?.valid">
+            <div *ngIf="loginForm.get('password')?.errors?.['required']" class="error-text">
+                Password is required
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+            <label>TimeAPI GUID</label>
+            <input type="text" class="form-control" formControlName="apiguid"/>
+            <div *ngIf="loginForm.get('apiguid')?.touched && !loginForm.get('apiguid')?.valid">
+                <div *ngIf="loginForm.get('apiguid')?.errors?.['required']" class="error-text">
+                    TimeAPI GUID is required
+                </div>
+                <div *ngIf="loginForm.get('apiguid')?.errors?.['pattern']" class="error-text">
+                    TimeAPI GUID must be in GUID/UUID format
+                </div>
+            </div>
+          </div>
+  
+        <div class="d-flex">
+            <div class="mx-1">
+                <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">
+                    Login
+                </button>
+            </div>
+            <div class="mx-1">
+                <button type="submit" class="btn btn-danger" [disabled]="!loginForm.valid">
+                    Remove Access Token
+                </button>
+            </div>
+          
+          
+        </div>
+      </form>
+    </div>
+  </div>
