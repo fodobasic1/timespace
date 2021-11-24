@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { exhaustMap, map, mergeMap, of, tap } from "rxjs";
+import { catchError, exhaustMap, map, mergeMap, of, tap } from "rxjs";
 import { User } from "src/app/core/models/user.model";
 import { AuthService } from "src/app/core/services/auth.service";
-import { autoLogin, autoLoginFailed, loginStart, loginSuccess, logout } from "./auth.actions";
+import { autoLogin, autoLoginFailed, loginFailed, loginStart, loginSuccess, logout } from "./auth.actions";
 
 @Injectable()
 export class AuthEffects {
@@ -18,24 +18,32 @@ export class AuthEffects {
         return this.actions$.pipe(
             ofType(loginStart),
             mergeMap((action) => {
-
-                const user = new User(
-                    action.username,
-                    action.password,
-                    action.apiguid
-                );
-                this.authService.storeUserInLocalStorage(user);
-                return of(loginSuccess({ user: user, redirect: true }));
+                return this.authService
+                    .login(action.username, action.password, action.timeapiguid)
+                    .pipe(
+                        map((data) => {
+                            debugger
+                            const serverResponse = this.authService.convertToServerRespose(data);
+                            console.log('server resp : ', serverResponse);
+                            this.authService.setUserDataLocalStorage(serverResponse.Token);
+                            return loginSuccess({ response: serverResponse, redirect: true });
+                        }),
+                        catchError((error) => {
+                            console.log('err : ', error);
+                            return of(loginFailed({ message: error.error.error.message }));
+                        })
+                    );
             })
-        )
+        );
     });
 
     loginRedirect$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(loginSuccess),
             tap((action) => {
+                debugger
                 if(action.redirect) {
-                    this.router.navigate(['/employees'])
+                    this.router.navigate(['/users'])
                 }
             })
         )
@@ -47,7 +55,7 @@ export class AuthEffects {
             mergeMap((action) => {
                 const user = this.authService.fethcUserFromLocalStorage();
                 if(user) {
-                    return of(loginSuccess({ user, redirect: true}));
+                    return of(loginSuccess({ response: user, redirect: true}));
                 }
                 
                 this.router.navigate(['/settings']);

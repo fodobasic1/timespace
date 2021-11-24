@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+   apiUrl: 'http://rdweb.spica.com:5213/timeapi/'
+  // ** TESTING API URI ** 
+  //apiUrl: 'https://6198ff813fc322001722f5fb.mockapi.io/timeapi/'
 };
 
 /*

@@ -1,33 +1,64 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { ServerResponseData } from '../models/serverResponse.model';
 import { User } from '../models/user.model';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor() { }
+  protected _headers: HttpHeaders;
 
-  storeUserInLocalStorage(user: User) {
-    localStorage.setItem('user_data', JSON.stringify(user));
+  constructor(private http: HttpClient) {}
 
-    this.storeUserTokenInLocalStorage(user.apiguid);
+  login(userName: string, password: string, timeapiguid: string): Observable<any> {
+
+    const object = {
+      userName: userName,
+      password: password,
+      sid: null
+    }
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Authorization', 'SpicaToken ' + timeapiguid);
+    const url = `${environment.apiUrl}Session/GetSession`;
+    localStorage.setItem('apiguid', timeapiguid);
+    debugger
+    return this.http.post<any>(url, object, { 'headers': headers });
   }
 
-  private storeUserTokenInLocalStorage(apiGuid: string) {
-    localStorage.setItem('user_token', JSON.stringify(apiGuid));
+  convertToServerRespose(_data: ServerResponseData) {
+    const data = new ServerResponseData();
+
+    data.UserId = _data.UserId;
+    data.Username = _data.Username;
+    data.TokenTimeStamp = _data.TokenTimeStamp;
+    data.Token = _data.Token;
+
+    return data;
+  }
+
+  setUserDataLocalStorage(token: string) {
+    localStorage.setItem('usertoken', JSON.stringify(token));
+
+    // run timeout();
   }
 
   fethcUserFromLocalStorage() {
-    const userData = localStorage.getItem('user_data');
+    const userData = localStorage.getItem('usertoken');
 
-    if(userData) {
+    if(userData != undefined) {
       const parsedData = JSON.parse(userData);
-      const user = new User(
-        parsedData.username,
-        parsedData.password,
-        parsedData.apiguid
-      );
+      const user = new ServerResponseData();
+      user.Token = parsedData.Token;
+
+      // run timeout()
 
       return user;
     }
@@ -35,13 +66,8 @@ export class AuthService {
     return null as any;
   }
 
-
-  getUserTokenFromStorage() {
-    return localStorage.getItem('user_token');
-  }
-
   logout() {
-    localStorage.removeItem('user_data');
-    localStorage.removeItem('user_token');
+    localStorage.removeItem('apiguid');
+    localStorage.removeItem('usertoken');
   }
 }

@@ -1,11 +1,13 @@
-import { User } from "src/app/core/models/user.model";
+import { ServerResponseData } from "src/app/core/models/serverResponse.model";
 
 export interface AuthState {
     isAuthenticated: boolean;
-    user: User | null;
+    user: ServerResponseData | null;
+    errorMessage: string | null;
 }
 
 export const initialState: AuthState = {
     isAuthenticated: false,
-    user: null
+    user: null,
+    errorMessage: null
 }

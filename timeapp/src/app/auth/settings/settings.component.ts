@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { loginStart, logout } from '../auth/state/auth.actions';
-import { isAuthenticated } from '../auth/state/auth.selector';
-import { AuthState } from '../auth/state/auth.state';
-import { User } from '../core/models/user.model';
-import { AuthService } from '../core/services/auth.service';
+import { map, Observable } from 'rxjs';
+import { loginStart, loginSuccess, logout } from '../state/auth.actions';
+import { isAuthenticated } from '../state/auth.selector';
+import { AuthState } from '../state/auth.state';
+import { User } from '../../core/models/user.model';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -39,15 +39,14 @@ export class SettingsComponent implements OnInit {
     this.submitted = true;
     const username = this.loginForm.value.username;
     const password = this.loginForm.value.password;
-    const apiguid = this.loginForm.value.apiguid;
-    this.loggedUser = new User(
-      username,
-      password,
-      apiguid
-    );
+    const timeapiguid = this.loginForm.value.apiguid;
 
-    this.store.dispatch(loginStart({ username, password, apiguid}));
-    console.log('is auth : ', this.isAuthenticated);
+    /*this.authService.login(username, password, timeapiguid).subscribe(data => {
+      const resp = this.authService.convertToServerRespose(data);
+      debugger
+      this.authService.setUserDataLocalStorage(resp.Token);
+    });*/
+    this.store.dispatch(loginStart({ username, password, timeapiguid}));
     
   }
 

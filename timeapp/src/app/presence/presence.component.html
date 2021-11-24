@@ -1,0 +1,14 @@
+<div class="container employees-content">
+    <div class="auth-error d-flex justify-content-center" *ngIf="!(isAuthenticated | async)">
+        <div>
+            Oops, you must be authenticated to access this page :( <br>
+            Hurry up, go to the 
+                <a [routerLink]="['/settings']">Settings</a> 
+            page!
+        </div>
+    </div>
+    <div class="content" *ngIf="(isAuthenticated | async)">
+        Presence Content
+    </div>
+</div>
+

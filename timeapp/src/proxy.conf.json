@@ -1,0 +1,12 @@
+{
+    "/timeapi/*": {
+      "target": "http://rdweb.spica.com:5213/timeapi",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api": ""
+      }
+    }
+    
+  }

@@ -43,7 +43,7 @@
                 </button>
             </div>
             <div class="mx-1">
-                <button class="btn btn-danger" (click)="onLogout()" [disabled]="isAuthenticated">
+                <button class="btn btn-danger" (click)="onLogout()" [disabled]="!(isAuthenticated | async)">
                     Remove Access Token
                 </button>
             </div>
