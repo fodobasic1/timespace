@@ -37,9 +37,12 @@ export class Employee {
         _firstName: string,
         _lastName: string,
         _email: string,
-        _present: boolean) {
+        _middleName: string,
+        _address: string) {
             this.FirstName = _firstName;
             this.LastName = _lastName;
             this.Email = _email;
+            this.Address= _address;
+            this.MiddleName = _middleName
         }
 }

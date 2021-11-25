@@ -22,14 +22,11 @@ export class AuthEffects {
                     .login(action.username, action.password, action.timeapiguid)
                     .pipe(
                         map((data) => {
-                            debugger
                             const serverResponse = this.authService.convertToServerRespose(data);
-                            console.log('server resp : ', serverResponse);
                             this.authService.setUserDataLocalStorage(serverResponse.Token);
                             return loginSuccess({ response: serverResponse, redirect: true });
                         }),
                         catchError((error) => {
-                            console.log('err : ', error);
                             return of(loginFailed({ message: error.error.error.message }));
                         })
                     );
@@ -41,7 +38,6 @@ export class AuthEffects {
         return this.actions$.pipe(
             ofType(loginSuccess),
             tap((action) => {
-                debugger
                 if(action.redirect) {
                     this.router.navigate(['/users'])
                 }

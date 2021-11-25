@@ -1,8 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AuthService } from './auth.service';
 
 export abstract class BaseService {
 
@@ -47,9 +45,23 @@ export abstract class BaseService {
     );
   }
 
+  public getWithOptions(url: string, presenceDate: string): Observable<any> {
+    url = this.buildUrl(url, null);
+    const httpOptions = {
+      headers: this._headers,
+      params: {
+        'TimeStamp': presenceDate,
+        'OrgUnitID': '10000000',
+        'showInactiveEmployees': 'false'
+      }
+    };
+
+    return this._http.get(url, httpOptions);
+  }
+
   public insert(url: string, data: any): Observable<any> {
     url = this.buildUrl(url, null);
-    return this._http.post(url, data, { headers: this._headers }).pipe(
+    return this._http.put(url, data, { headers: this._headers }).pipe(
       catchError(this.handleError)
     );
   }

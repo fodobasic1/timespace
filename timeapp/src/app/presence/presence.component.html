@@ -8,7 +8,56 @@
         </div>
     </div>
     <div class="content" *ngIf="(isAuthenticated | async)">
-        Presence Content
+        <div class="header d-flex flex-row justify-content-between">
+            <div class="employee-search">
+            </div>
+            <div class="bnt-add">
+                <button type="button" (click)="onReload()" class="btn btn-primary btn-reload-presence">
+                    Reload <span>Presence</span>
+                </button>                
+            </div>
+        </div>
     </div>
+    <div class="auth-error-second d-flex justify-content-center" *ngIf="!presences && (isAuthenticated | async)">
+        Oops, there are no presences... <br>
+        Try to reload and we will try to find something for you :)
+    </div>
+    <table class="table table-striped" *ngIf="presences">
+        <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th class="tbl-firstname" scope="col">First Name</th>
+              <th class="tbl-lastname" scope="col">Last Name</th>
+              <th class="tbl-email" scope="col">Email</th>
+              <th class="tbl-city" scope="col">City</th>
+              <th class="tbl-phone" scope="col">Phone</th>
+              <th class="tbl-address" scope="col">Address</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let presence of presences ; index as i">
+                <td>
+                    {{ presence.Id }}
+                </td>
+                <td class="tbl-firstname">
+                    {{ presence.FirstName }}
+                </td>
+                <td class="tbl-lastname">
+                    {{ presence.LastName }}
+                </td>
+                <td class="tbl-email">
+                    {{ presence.Email }}
+                </td>
+                <td class="tbl-city">
+                    {{ presence.City }}
+                </td>
+                <td class="tbl-phone">
+                    {{ presence.Phone }}
+                </td>
+                <td class="tbl-address">
+                    {{ presence.Address }}
+                </td>
+            </tr>
+    </table>
 </div>
 

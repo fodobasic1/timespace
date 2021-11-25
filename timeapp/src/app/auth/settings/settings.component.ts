@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
-import { loginStart, loginSuccess, logout } from '../state/auth.actions';
+import { Observable } from 'rxjs';
+import { loginStart, logout } from '../state/auth.actions';
 import { isAuthenticated } from '../state/auth.selector';
 import { AuthState } from '../state/auth.state';
 import { User } from '../../core/models/user.model';
-import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -20,7 +19,6 @@ export class SettingsComponent implements OnInit {
   isAuthenticated: Observable<boolean>;
   
   constructor(
-    private authService: AuthService,
     private store: Store<AuthState>
   ) { }
 
@@ -41,11 +39,6 @@ export class SettingsComponent implements OnInit {
     const password = this.loginForm.value.password;
     const timeapiguid = this.loginForm.value.apiguid;
 
-    /*this.authService.login(username, password, timeapiguid).subscribe(data => {
-      const resp = this.authService.convertToServerRespose(data);
-      debugger
-      this.authService.setUserDataLocalStorage(resp.Token);
-    });*/
     this.store.dispatch(loginStart({ username, password, timeapiguid}));
     
   }

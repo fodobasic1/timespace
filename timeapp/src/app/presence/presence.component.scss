@@ -10,3 +10,41 @@
     letter-spacing: 1px;
 }
 
+.auth-error-second {
+    margin-top: 40px;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.btn-add-employee > span {
+
+    @include media("<=" + $tablet-portrait) {
+        display: none;
+    }
+}
+
+.table {
+    @include media("<=" + $tablet-portrait) {
+        td {
+            word-break: break-word;
+        }
+        .tbl-firstname, .tbl-lastname {
+            max-width: 150px!important;
+        }
+        .tbl-phone {
+            min-width: 100px!important;
+        }
+        .tbl-address, .tbl-city {
+            display: none;
+        }
+    }
+    @include media("<=" + $mobile-landscape) {
+        .tbl-phone, .tbl-email {
+            display: none;
+        }
+    }
+}
+
+.header {
+    margin-bottom: 50px;
+}

@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ServerResponseData } from '../models/serverResponse.model';
-import { User } from '../models/user.model';
-import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +27,6 @@ export class AuthService {
       .set('Authorization', 'SpicaToken ' + timeapiguid);
     const url = `${environment.apiUrl}Session/GetSession`;
     localStorage.setItem('apiguid', timeapiguid);
-    debugger
     return this.http.post<any>(url, object, { 'headers': headers });
   }
 
@@ -46,8 +43,6 @@ export class AuthService {
 
   setUserDataLocalStorage(token: string) {
     localStorage.setItem('usertoken', JSON.stringify(token));
-
-    // run timeout();
   }
 
   fethcUserFromLocalStorage() {
@@ -58,8 +53,6 @@ export class AuthService {
       const user = new ServerResponseData();
       user.Token = parsedData.Token;
 
-      // run timeout()
-
       return user;
     }
 
@@ -69,5 +62,16 @@ export class AuthService {
   logout() {
     localStorage.removeItem('apiguid');
     localStorage.removeItem('usertoken');
+  }
+
+  authDoubleCheck(): boolean {
+    const usertoken = localStorage.getItem('usertoken');
+    const apiguid = localStorage.getItem('apiguid');
+
+    if(usertoken && apiguid) {
+      return true;
+    }
+
+    return false;
   }
 }

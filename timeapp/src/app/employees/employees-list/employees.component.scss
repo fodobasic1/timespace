@@ -13,3 +13,37 @@
 .header {
     margin-bottom: 50px;
 }
+
+.btn-add-employee > span {
+
+    @include media("<=" + $tablet-portrait) {
+        display: none;
+    }
+}
+
+.table {
+    @include media("<=" + $tablet-portrait) {
+        td {
+            word-break: break-word;
+        }
+        .tbl-firstname, .tbl-lastname {
+            max-width: 150px!important;
+        }
+        .tbl-phone {
+            min-width: 100px!important;
+        }
+        .tbl-address, .tbl-city {
+            display: none;
+        }
+    }
+    @include media("<=" + $mobile-landscape) {
+        .tbl-phone, .tbl-email {
+            display: none;
+        }
+    }
+}
+
+.error-text {
+    color: red;
+    font-size: 10px;
+}
