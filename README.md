@@ -4,14 +4,13 @@
 A frontend application that allows you to browse through employees and presence. 
 Also, you can add a new employee. 
 
-This application is built using Angular 13, Bootstrap, Ng-bootstrap. 
 
 
 
 
 ## Tech Stack
 
-**Client:** Angular 13, Bootstrap, Ng-Bootstrap, SASS
+**Client:** Angular 13, Bootstrap, Ng-Bootstrap, SASS, ngrx
 
 **Server:** TimeAPI
 
