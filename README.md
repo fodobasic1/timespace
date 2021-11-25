@@ -18,6 +18,7 @@ Also, you can add a new employee.
 ## Prerequisites
 
 To deploy this project on your local machine you have to install following :
+- Chrome browser
 - [Node](https://nodejs.org/en/) (this includes necessary npm)
 - Angular CLI :
   - Open terminal window and run following command
